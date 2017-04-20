@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WEB-API-SCOPING</title>
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.js"
+    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+    crossorigin="anonymous"></script>
+    <style>
+      #tombol button {
+        width: 150px;
+        height: 70px;
+        font-size: 15pt;
+      }
+
+      #daftar li {
+        font-size: 15pt;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="daftar">
+      <li><a onclick="pagehome()" href="#">Home</a></li>
+      <li><a onclick="skill()" href="#">Skills</a></li>
+      <li><a onclick="meals()" href="#">Meals</a></li>
+    </ul>
+    <div class="laks">
+      <marquee width="500px" behavior="alternate"><h1 style="color: red;">Initial Title</h1></marquee>
+      <div id="tombol">
+        <button onclick="dataHeading()" data="It Changes!">INITIAL BUTTON</button>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    function dataHeading() {
+      if(document.querySelector("div.laks h1").innerHTML == "Initial Title"){
+        document.querySelector("div.laks h1").innerHTML = $("div.laks button").attr("data")
+      } else {
+        document.querySelector("div.laks h1").innerHTML = "Initial Title"
+      }
+    }
+
+    function pagehome() {
+      document.getElementById("tombol").innerHTML = `<button onclick="dataHeading()" data="It Changes!">INITIAL BUTTON</button>`
+    }
+
+
+    function dataURL() {
+      if(document.querySelector("div.laks h1").innerHTML == "Initial Title"){
+        document.querySelector("div.laks h1").innerHTML = document.URL
+      } else {
+        document.querySelector("div.laks h1").innerHTML = "Initial Title"
+      }
+    }
+
+    function skill() {
+      document.getElementById("tombol").innerHTML = `<button onclick="dataURL()" data="It Changes!">S K I L L</button>`
+    }
+
+    function meals() {
+      document.getElementById("tombol").innerHTML = `<button onclick="dataMeals()" data="It Changes!">M E A L S</button>`
+    }
+
+    $(document).ready(function() {
+      $.ajax({
+        url: "http://localhost:3000/",
+        type: "GET",
+        success: function(result) {
+          localStorage.setItem("meals", result)
+        }
+      })
+    })
+
+    function dataMeals() {
+      var meals = localStorage.getItem("meals").split(",")
+      var rand = Math.floor(Math.random()*5)
+      document.querySelector('div.laks h1').innerHTML = meals[rand]
+    }
+  </script>
+
+</html>
